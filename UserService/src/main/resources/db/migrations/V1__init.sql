@@ -1,0 +1,13 @@
+CREATE TABLE app_user (
+  id BIGSERIAL PRIMARY KEY,
+  username VARCHAR(255) NOT NULL UNIQUE,
+  password VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE refresh_token (
+   id BIGSERIAL PRIMARY KEY,
+   token VARCHAR(512) NOT NULL UNIQUE,
+   user_id BIGINT REFERENCES app_user(id) ON DELETE CASCADE,
+   crated_at TIMESTAMP NOT NULL DEFAULT now(),
+   expires_at TIMESTAMP NOT NULL
+);
