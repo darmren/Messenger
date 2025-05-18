@@ -11,9 +11,9 @@
 <packaging>pom</packaging>
 
     <modules>
-        <module>userService</module>
+        <module>UserService</module>
         <!--        <module>gateway</module>-->
-        <!--        <module>chatService</module>-->
+        <module>ChatService</module>
     </modules>
 
 <properties>
