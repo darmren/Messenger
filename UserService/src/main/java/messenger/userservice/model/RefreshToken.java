@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Date;
+import java.util.UUID;
 
 @Entity
 @Table(name="refresh_tokens")
@@ -15,7 +16,7 @@ import java.util.Date;
 public class RefreshToken {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(unique=true, nullable=false)
     private String token;
@@ -23,8 +24,8 @@ public class RefreshToken {
     @Column(unique=true, name="created_at")
     private Date createdAt;
 
-    @Column(unique=true, nullable=false, name="expires_at")
-    private Date expiresAt;
+    @Column(unique=true, nullable=false, name="expired_at")
+    private Date expiredAt;
 
     @JoinColumn(unique = true, nullable = false)
     @ManyToOne//TODO правильно?

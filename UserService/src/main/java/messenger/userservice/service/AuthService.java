@@ -33,7 +33,7 @@ public class AuthService {
         });
         User user = User.builder()
                 .username(username)
-                .password(passwordEncoder.encode(password))
+                .passwordHash(passwordEncoder.encode(password))
                 .build();
         userRepository.save(user);
         return generateTokens(user);
@@ -42,7 +42,7 @@ public class AuthService {
     public TokenResponse login(String username, String password) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User " + username + " not found"));
-        if (!passwordEncoder.matches(password, user.getPassword())) {
+        if (!passwordEncoder.matches(password, user.getPasswordHash())) {
             throw new BadCredentialsException("Invalid password");
         }
         return generateTokens(user);
@@ -51,7 +51,7 @@ public class AuthService {
     public TokenResponse refreshSession(RefreshToken refreshToken) throws IllegalAccessException {
         refreshTokenRepository.findByToken(refreshToken.getToken())//ищем токен-сессию
                 .orElseThrow(() -> new BadCredentialsException("Invalid refresh token"));
-        if (refreshToken.getExpiresAt().before(new Date())) { //если токен истек, удаляем сессию
+        if (refreshToken.getExpiredAt().before(new Date())) { //если токен истек, удаляем сессию
             refreshTokenRepository.delete(refreshToken);
             throw new IllegalAccessException("Refresh token expired");
         }
@@ -66,7 +66,7 @@ public class AuthService {
         var now = new Date();
         RefreshToken refreshToken = RefreshToken.builder()
                 .createdAt(now)
-                .expiresAt(new Date(now.getTime() + jwtProperties.getAccessLifetime()))
+                .expiredAt(new Date(now.getTime() + jwtProperties.getAccessLifetime()))
                 .token(refresh)
                 .user(user)
                 .build();
