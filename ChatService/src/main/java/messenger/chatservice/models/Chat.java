@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import messenger.chatservice.enums.ChatType;
 
+
 @Entity
 @Table(name = "chats")
 @Data
@@ -19,6 +20,6 @@ public class Chat {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "chat_types") // <<< указание PG enum типа
     private ChatType type;
 }

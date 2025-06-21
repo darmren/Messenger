@@ -24,10 +24,10 @@ public class Message {
     private Chat chat;
 
     @Column(name = "sender_id", nullable = false)
-    private Long sender;
+    private Long senderId;
 
     @Column(name = "send_at", nullable = false)
-    private Instant sendAt;
+    private Instant sendAt = Instant.now();
 
     @Column(nullable = false)
     private String text;

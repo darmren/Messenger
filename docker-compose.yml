@@ -1,0 +1,72 @@
+version: '3.8'
+
+services:
+
+  postgres:
+    image: postgres:16
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: messenger
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  user-service:
+    build:
+      context: ./UserService
+    container_name: user-service
+    ports:
+      - "8081:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/messenger
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_PROFILES_ACTIVE: docker
+    depends_on:
+      - postgres
+    networks:
+      - default
+
+  chat-service:
+    build:
+      context: ./ChatService
+    container_name: chat-service
+    ports:
+      - "8082:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/messenger
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_FLYWAY_ENABLED: false
+      SPRING_PROFILES_ACTIVE: docker
+    depends_on:
+      - postgres
+    networks:
+      - default
+
+
+  gateway:
+    build:
+      context: ./Gateway
+    container_name: gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - user-service
+      - chat-service
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+    networks:
+      - default
+
+networks:
+  default:
+    name: messenger-network
+
+
+volumes:
+  pgdata:

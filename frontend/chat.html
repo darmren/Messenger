@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <title>Чат</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div class="container">
+    <h2 id="chat-title">Чат</h2>
+    <div id="chat-box">Сообщения будут тут (WebSocket)</div>
+    <input id="message" placeholder="Сообщение..." />
+    <button onclick="sendMessage()">Отправить</button>
+    <button class="logout" onclick="logout()">Выйти</button>
+</div>
+<script src="app.js"></script>
+<script>
+    src = "webSocket.js"
+
+    // здесь можно подключать WebSocket к /ws-chat
+</script>
+</body>
+</html>

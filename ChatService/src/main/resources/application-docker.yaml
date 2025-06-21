@@ -1,0 +1,21 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: ChatService
+
+  datasource:
+    url: jdbc:postgresql://postgres:5432/messenger
+    username: messenger-user
+    password: 123
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+
+  flyway:
+    enabled: false
+    baseline-on-migrate: false

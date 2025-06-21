@@ -1,0 +1,27 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: UserService
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/messenger
+    username: messenger-user
+    password: 123
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+
+jwt:
+  access-secret: 3dd10e091e74d8d4254987078cabb31e35a89eee8e51092e830e65f18fdad7d9
+  refresh-secret: 633c1a1f3f449414b81df96ea473c2893292cb1d3a7b652f3bf8ba8400443897
+  access-lifetime: 900000
+  refresh-lifetime: 604800000

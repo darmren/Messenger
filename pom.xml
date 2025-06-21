@@ -12,7 +12,7 @@
 
     <modules>
         <module>UserService</module>
-        <!--        <module>gateway</module>-->
+        <module>Gateway</module>
         <module>ChatService</module>
     </modules>
 

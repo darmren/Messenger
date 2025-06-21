@@ -61,8 +61,8 @@ public class AuthService {
     }
 
     public TokenResponse generateTokens(User user) {
-        String access = jwtProvider.generateAccessToken(user.getUsername());
-        String refresh = jwtProvider.generateRefreshToken(user.getUsername());
+        String access = jwtProvider.generateAccessToken(user.getId());
+        String refresh = jwtProvider.generateRefreshToken(user.getId());
         var now = new Date();
         RefreshToken refreshToken = RefreshToken.builder()
                 .createdAt(now)

@@ -1,0 +1,1 @@
+ALTER TABLE personal_chats ADD UNIQUE(member1_id, member2_id)

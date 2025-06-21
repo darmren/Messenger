@@ -23,8 +23,8 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable) // отключение CSRF
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll() // регистрация и логин — открыты
-                        .anyRequest().authenticated() // всё остальное — защищено
+                        .requestMatchers("/auth/**", "/**").permitAll() // регистрация и логин — открыты
+                        //.anyRequest().authenticated() // всё остальное — защищено
                 )
                 .build();
     }

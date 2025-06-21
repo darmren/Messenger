@@ -1,0 +1,31 @@
+body {
+    font-family: sans-serif;
+    background: #f0f0f0;
+    padding: 2rem;
+}
+.container {
+    max-width: 400px;
+    margin: auto;
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 0 10px #ccc;
+}
+input, button {
+    width: 100%;
+    padding: 0.5rem;
+    margin-top: 0.5rem;
+}
+.user {
+    padding: 0.5rem;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+}
+.user:hover {
+    background: #f9f9f9;
+}
+.logout {
+    background: crimson;
+    color: white;
+    margin-top: 1rem;
+}

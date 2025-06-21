@@ -4,11 +4,13 @@ package messenger.userservice.jwt;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
-import messenger.userservice.dto.TokenResponse;
 import messenger.userservice.repository.RefreshTokenRepository;
 import org.springframework.stereotype.Service;
 
+import javax.crypto.SecretKey;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 @Service
@@ -22,25 +24,31 @@ public class JwtProvider {
     private final JwtProperties jwtProperties;
     private final RefreshTokenRepository refreshTokenRepository;
 
-    public String generateAccessToken(String username) {
-        return buildToken(username, jwtProperties.getAccessLifetime(), jwtProperties.getAccessSecret());
+    public String generateAccessToken(Long userId) {
+        return buildToken(userId, jwtProperties.getAccessLifetime(), jwtProperties.getAccessSecret());
     }
 
-    public String generateRefreshToken(String username) {
-        var refresh = buildToken(username, jwtProperties.getRefreshLifetime(), jwtProperties.getRefreshSecret());
-        return buildToken(username, jwtProperties.getRefreshLifetime(), jwtProperties.getRefreshSecret());
+    public String generateRefreshToken(Long userId) {
+        var refresh = buildToken(userId, jwtProperties.getRefreshLifetime(), jwtProperties.getRefreshSecret());
+        return buildToken(userId, jwtProperties.getRefreshLifetime(), jwtProperties.getRefreshSecret());
     }
 
-    private String buildToken(String username, long expiration, String secret) {
+
+
+    private String buildToken(Long userId, long expiration, String secret) {
         Date now = new Date();
         Date expiry = new Date(now.getTime() + expiration);
+
+        SecretKey key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+
         return Jwts.builder()
-                .setSubject(username)
+                .setSubject(String.valueOf(userId))
                 .setIssuedAt(now)
                 .setExpiration(expiry)
-                .signWith(SignatureAlgorithm.HS512, secret)
+                .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
+
 
     public String getUsernameFromAccessToken(String token) {
         return parseToken(token, jwtProperties.getAccessSecret());
